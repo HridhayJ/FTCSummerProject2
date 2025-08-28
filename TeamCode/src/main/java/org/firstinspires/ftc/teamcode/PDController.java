@@ -88,7 +88,6 @@ public class PDController extends LinearOpMode {
             telemetry.addData("Power", power);
             telemetry.update();
 
-            sleep(5); // small delay to avoid overloading the loop
         }
     }
 
