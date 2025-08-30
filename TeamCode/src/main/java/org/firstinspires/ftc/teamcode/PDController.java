@@ -1,22 +1,26 @@
 package org.firstinspires.ftc.teamcode;
 
 // FTC SDK imports
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
+@Config
 @TeleOp(name="PDController", group="Self-Tuning")
 public class PDController extends LinearOpMode {
 
     private DcMotorEx motor;
-    private int targetPosition = 1000; // desired encoder ticks
+    public static int targetPosition = 0; // desired encoder ticks
+    public static double cov = 1.0;
+    public static double processNoise = 0.01;
+    public static double meas = 1.0;
 
     @Override
     public void runOpMode() {
 
-        // Initialize motor
+        // Initialize motor+
         motor = hardwareMap.get(DcMotorEx.class, "motor");
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -88,40 +92,6 @@ public class PDController extends LinearOpMode {
             telemetry.addData("Power", power);
             telemetry.update();
 
-        }
-    }
-
-    // -------------------
-    // 1D Kalman filter class
-    // -------------------
-    public class KalmanFilter1D {
-        private double x; // estimated position
-        private double P; // estimation error covariance
-        private double Q; // process noise
-        private double R; // measurement noise
-
-        public KalmanFilter1D(double initialEstimate, double initialCovariance, double processNoise, double measurementNoise) {
-            x = initialEstimate;
-            P = initialCovariance;
-            Q = processNoise;
-            R = measurementNoise;
-        }
-
-        public double update(double measurement) {
-            // Predict
-            double x_pred = x;
-            double P_pred = P + Q;
-
-            // Update
-            double K = P_pred / (P_pred + R);
-            x = x_pred + K * (measurement - x_pred);
-            P = (1 - K) * P_pred;
-
-            return x;
-        }
-
-        public double getEstimate() {
-            return x;
         }
     }
 }
