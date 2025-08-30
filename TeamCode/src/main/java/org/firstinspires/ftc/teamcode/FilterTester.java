@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 
 @Config
-@TeleOp(name="KalmanFilterTest", group="Test")
+@TeleOp(name="KalmanFilterTest", group="hi")
 public class FilterTester extends LinearOpMode {
 
     private DcMotor motor;
