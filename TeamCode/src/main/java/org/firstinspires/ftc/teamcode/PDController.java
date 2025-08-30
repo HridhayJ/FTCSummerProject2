@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
 // FTC SDK imports
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -10,7 +12,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @Config
 @TeleOp(name="PDController", group="hi")
 public class PDController extends LinearOpMode {
-
     private DcMotorEx motor;
     public static int targetPosition = 0; // desired encoder ticks
     public static double cov = 1.0;
@@ -19,11 +20,11 @@ public class PDController extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         // Initialize motor+
         motor = hardwareMap.get(DcMotorEx.class, "motor");
-        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
         double previousTicks = motor.getCurrentPosition();
 
