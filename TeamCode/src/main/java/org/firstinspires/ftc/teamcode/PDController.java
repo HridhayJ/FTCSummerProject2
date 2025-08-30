@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 @Config
-@TeleOp(name="PDController", group="Self-Tuning")
+@TeleOp(name="PDController", group="hi")
 public class PDController extends LinearOpMode {
 
     private DcMotorEx motor;
