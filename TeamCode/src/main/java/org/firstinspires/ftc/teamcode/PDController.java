@@ -14,8 +14,8 @@ public class PDController extends LinearOpMode {
     private DcMotorEx motor;
     public static int targetPosition = 0; // desired encoder ticks
     public static double cov = 1.0;
-    public static double processNoise = 0.01;
-    public static double meas = 1.0;
+    public static double pNoise = 0.01;
+    public static double mNoise = 4.0;
 
     @Override
     public void runOpMode() {
@@ -32,7 +32,7 @@ public class PDController extends LinearOpMode {
         double previousTime = timer.seconds();
 
         // Initialize Kalman filter (initial estimate = current position)
-        KalmanFilter1D kalman = new KalmanFilter1D(previousTicks, 1.0, 0.01, 4.0);
+        KalmanFilter1D kalman = new KalmanFilter1D(previousTicks, cov, pNoise, mNoise);
 
         waitForStart();
         timer.reset();
