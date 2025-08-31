@@ -7,7 +7,6 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 @Config
 @TeleOp(name="PDController", group="hi")
@@ -37,19 +36,15 @@ public class PDController extends LinearOpMode {
 
         waitForStart();
         timer.reset();
-        previousTime = timer.seconds();
 
         while (opModeIsActive()) {
+            double dt = timer.seconds();
+            timer.reset();
 
-            double currentTime = timer.seconds();
-            double dt = currentTime - previousTime;
-            previousTime = currentTime;
-
-            // Read raw encoder ticks
-            double rawTicks = motor.getCurrentPosition();
+            double mPos = motor.getCurrentPosition();
 
             // Smooth ticks using Kalman filter
-            double smoothTicks = kalman.update(rawTicks);
+            double smoothTicks = kalman.update(mPos);
 
             // Compute error and velocity using smoothed ticks
             double error = targetPosition - smoothTicks;
@@ -74,7 +69,7 @@ public class PDController extends LinearOpMode {
 
             // Telemetry
             telemetry.addData("Target", targetPosition);
-            telemetry.addData("Raw Ticks", rawTicks);
+            telemetry.addData("Raw Ticks", mPos);
             telemetry.addData("Smooth Ticks", smoothTicks);
             telemetry.addData("Error", error);
             telemetry.addData("Velocity", velocity);
