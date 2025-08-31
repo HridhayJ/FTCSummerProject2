@@ -45,8 +45,6 @@ public class PDController extends LinearOpMode {
             double dt = currentTime - previousTime;
             previousTime = currentTime;
 
-            if (dt <= 0.0) dt = 0.001;
-
             // Read raw encoder ticks
             double rawTicks = motor.getCurrentPosition();
 
@@ -67,16 +65,8 @@ public class PDController extends LinearOpMode {
                 Kp = 0.25 * Kd * Kd; // critical damping
             }
 
-            // Compute motor power
             double power = Kp * error + Kd * dotE;
 
-            // Optional deadzone to prevent jitter
-            if (Math.abs(error) < 2) power = 0;
-
-            // Clamp power
-            power = Math.max(Math.min(power, 1.0), -1.0);
-
-            // Send command to motor
             motor.setPower(power);
 
             // Update previous ticks
